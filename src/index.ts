@@ -3,7 +3,9 @@ import { promises as fs } from 'fs';
 
 (async () => {
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox']
+  });
 
   try {
     const archiveUrl = process.env.UNITY_ARCHIVE_URL || 'https://unity3d.com/get-unity/download/archive';
