@@ -1,4 +1,4 @@
-## Unity Scrapper
+## Unity Scraper
 
 Simple script to scrape the unity download archive for version and change set info
 
