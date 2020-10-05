@@ -1,1 +1,29 @@
-console.log('Hello world');
+import puppeteer from 'puppeteer';
+import { promises as fs } from 'fs';
+
+(async () => {
+
+  const archiveUrl = process.env.UNITY_ARCHIVE_URL || 'https://unity3d.com/get-unity/download/archive';
+  const jsonPath = process.env.UNITY_VERSIONS_PATH || 'unity-versions.json';
+
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  
+  await page.goto(archiveUrl);
+
+  const unityVersionInfo = await page.evaluate(
+    () => Array.from(
+      document.querySelectorAll('.unityhub') as NodeListOf<HTMLAnchorElement>,
+      a => {
+        const link = a.href.replace('unityhub://', '');
+        return {
+          version: link.split('/')[0],
+          changeset: link.split('/')[1]
+        }
+      }
+    )
+  );
+
+  await fs.writeFile(jsonPath, JSON.stringify(unityVersionInfo), {encoding:'utf-8'});
+
+})();
