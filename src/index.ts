@@ -27,8 +27,6 @@ import fetch from 'node-fetch';
     console.log('DONE');
   } catch (e) {
     console.error(e);
-  } finally {
-
   }
 
 })();
