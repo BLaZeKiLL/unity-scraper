@@ -5,14 +5,14 @@ import fetch from 'node-fetch';
 (async () => {
 
   try {
-    const archiveUrl = process.env.UNITY_ARCHIVE_URL || 'https://unity3d.com/get-unity/download/archive';
+    const archiveUrl = process.env.UNITY_ARCHIVE_URL || 'https://unity.com/releases/editor/archive';
     const jsonPath = process.env.UNITY_VERSIONS_PATH || __dirname + '/unity-versions.json';
 
     const html = await (await fetch(archiveUrl)).text();
     const dom = new JSDOM(html);
 
     const unityVersionInfo = Array.from(
-      dom.window.document.querySelectorAll('.unityhub') as NodeListOf<HTMLAnchorElement>,
+      dom.window.document.querySelectorAll('.release-links div:first-child a[href]') as NodeListOf<HTMLAnchorElement>,
       a => {
         const link = a.href.replace('unityhub://', '');
         return {
